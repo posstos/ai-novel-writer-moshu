@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1080" height="1920" viewBox="0 0 1080 1920" role="img" aria-labelledby="title desc">
+  <title id="title">墨书 Moshu · AI 小说创作工作台 · 60 秒种草视频</title>
+  <desc id="desc">一支约 60 秒的竖屏动态 SVG，展示从灵感、设定、章节蓝图到草稿、审稿、修稿和定稿的本地优先创作流程。</desc>
+  <metadata>
+    {"product":"AI Novel Writer / 墨书 Moshu","format":"animated-svg-short-video","duration":"60s","viewport":"1080x1920","audio":"silent visual master"}
+  </metadata>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#071322"/>
+      <stop offset="0.52" stop-color="#0A1628"/>
+      <stop offset="1" stop-color="#15162D"/>
+    </linearGradient>
+    <linearGradient id="panel" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#152B42" stop-opacity=".96"/>
+      <stop offset="1" stop-color="#101D34" stop-opacity=".82"/>
+    </linearGradient>
+    <linearGradient id="cyanGold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#7EC8E3"/>
+      <stop offset="1" stop-color="#C9A76C"/>
+    </linearGradient>
+    <linearGradient id="violetCyan" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#9B8EC8"/>
+      <stop offset="1" stop-color="#5B9ED6"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#7EC8E3" stop-opacity=".32"/>
+      <stop offset="1" stop-color="#7EC8E3" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="softGlow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="12" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="170%">
+      <feDropShadow dx="0" dy="20" stdDeviation="20" flood-color="#000" flood-opacity=".32"/>
+    </filter>
+    <pattern id="grid" width="54" height="54" patternUnits="userSpaceOnUse">
+      <path d="M54 0H0V54" fill="none" stroke="#7EC8E3" stroke-opacity=".065" stroke-width="1"/>
+    </pattern>
+    <style>
+      .sans{font-family:'Noto Sans SC','Microsoft YaHei',sans-serif}
+      .serif{font-family:'Noto Serif SC','STSong',serif}
+      .eyebrow{font-size:22px;letter-spacing:5px;fill:#7EC8E3;font-weight:600}
+      .h1{font-size:70px;letter-spacing:2px;fill:#F4F8FC;font-weight:800}
+      .h2{font-size:48px;letter-spacing:1px;fill:#F4F8FC;font-weight:750}
+      .body{font-size:27px;letter-spacing:1px;fill:#B9C9D9;font-weight:400}
+      .small{font-size:20px;letter-spacing:2px;fill:#7F9AB2}
+      .chip{font-size:22px;letter-spacing:1px;fill:#EAF5FA;font-weight:600}
+      .gold{fill:#C9A76C}.cyan{fill:#7EC8E3}.violet{fill:#B7AAE1}
+      .line{stroke:#5B9ED6;stroke-width:3;stroke-linecap:round;fill:none}
+      .mutedLine{stroke:#49677F;stroke-width:2;stroke-linecap:round;fill:none}
+      .card{fill:url(#panel);stroke:#31516D;stroke-width:2}
+      .scene{opacity:0}
+    </style>
+  </defs>
+
+  <rect width="1080" height="1920" fill="url(#bg)"/>
+  <rect width="1080" height="1920" fill="url(#grid)"/>
+  <circle cx="160" cy="320" r="360" fill="url(#glow)" opacity=".45"/>
+  <circle cx="930" cy="1640" r="420" fill="url(#glow)" opacity=".24"/>
+  <path d="M-80 1540C220 1250 360 1710 650 1380S1070 1190 1170 930" fill="none" stroke="#5B9ED6" stroke-opacity=".14" stroke-width="3"/>
+  <path d="M-70 1590C250 1300 380 1760 670 1430S1090 1240 1170 980" fill="none" stroke="#9B8EC8" stroke-opacity=".1" stroke-width="2"/>
+
+  <!-- 0–8s: hook -->
+  <g id="scene-hook" class="scene">
+    <animate attributeName="opacity" dur="60s" repeatCount="indefinite" values="1;1;0;0;0;0" keyTimes="0;.12;.16;.34;.72;1"/>
+    <circle cx="540" cy="730" r="310" fill="url(#glow)" opacity=".7"/>
+    <g transform="translate(540 720)" filter="url(#shadow)">
+      <path d="M-190 -100 Q0 -155 190 -100 L190 210 Q0 150 -190 210Z" fill="#F7F5EF"/>
+      <path d="M0 -118V188" stroke="#D3D9DA" stroke-width="4"/>
+      <path d="M-145 -65Q-75 -90 -25 -65M-145 -20Q-77 -45 -25 -20M25 -65Q95 -90 145 -65M25 -20Q95 -45 145 -20" stroke="#9BAAB1" stroke-width="8" stroke-linecap="round" opacity=".8"/>
+      <path d="M-145 35Q-78 10 -25 35M25 35Q94 10 145 35" stroke="#9BAAB1" stroke-width="8" stroke-linecap="round" opacity=".55"/>
+      <path d="M-190 -100 Q0 -45 190 -100" fill="none" stroke="#C9A76C" stroke-width="5" opacity=".9"/>
+    </g>
+    <g filter="url(#softGlow)" fill="#7EC8E3">
+      <circle cx="270" cy="555" r="7"><animate attributeName="cy" values="555;510;555" dur="2.4s" repeatCount="indefinite"/></circle>
+      <circle cx="810" cy="510" r="5"><animate attributeName="cy" values="510;470;510" dur="1.8s" repeatCount="indefinite"/></circle>
+      <circle cx="820" cy="850" r="8"><animate attributeName="r" values="8;15;8" dur="2.2s" repeatCount="indefinite"/></circle>
+      <circle cx="270" cy="900" r="5"><animate attributeName="r" values="5;11;5" dur="2.8s" repeatCount="indefinite"/></circle>
+    </g>
+    <text x="540" y="260" text-anchor="middle" class="eyebrow sans">AI NOVEL WRITER · MOSHU</text>
+    <text x="540" y="1160" text-anchor="middle" class="h1 serif">灵感来了，别让它散掉</text>
+    <text x="540" y="1230" text-anchor="middle" class="body sans">把脑海里的故事，变成一个可持续的创作项目。</text>
+    <g transform="translate(540 1390)">
+      <rect x="-175" y="-38" width="350" height="76" rx="38" fill="#7EC8E3" fill-opacity=".12" stroke="#7EC8E3" stroke-opacity=".55"/>
+      <text y="9" text-anchor="middle" class="chip sans">墨书 Moshu</text>
+    </g>
+  </g>
+
+  <!-- 8–18s: structure -->
+  <g id="scene-structure" class="scene">
+    <animate attributeName="opacity" dur="60s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;.12;.17;.30;.36;1"/>
+    <text x="90" y="205" class="eyebrow sans">01 / 先搭好故事的骨架</text>
+    <text x="90" y="300" class="h2 serif">从前提，到角色与世界观</text>
+    <text x="90" y="355" class="body sans">不是一段聊天记录，而是一套可追溯的项目事实。</text>
+    <g transform="translate(90 520)" filter="url(#shadow)">
+      <rect width="900" height="760" rx="34" class="card"/>
+      <rect x="28" y="28" width="844" height="66" rx="18" fill="#0A1628" opacity=".82"/>
+      <circle cx="62" cy="61" r="9" fill="#C9A76C"/><circle cx="94" cy="61" r="9" fill="#7EC8E3"/><circle cx="126" cy="61" r="9" fill="#9B8EC8"/>
+      <text x="170" y="69" class="small sans">PROJECT / 雾海纪元</text>
+      <g transform="translate(56 155)">
+        <rect width="240" height="160" rx="22" fill="#203B55" stroke="#5B9ED6" stroke-width="2"/>
+        <text x="28" y="52" class="chip sans">故事前提</text><text x="28" y="96" class="body sans">一座会移动的城</text><text x="28" y="130" class="small sans">FOUNDATION</text>
+      </g>
+      <g transform="translate(330 155)">
+        <rect width="240" height="160" rx="22" fill="#2C3152" stroke="#9B8EC8" stroke-width="2"/>
+        <circle cx="42" cy="48" r="18" fill="#9B8EC8" opacity=".55"/><text x="74" y="56" class="chip sans">角色卡</text><text x="28" y="101" class="body sans">沈砚 · 记录者</text><text x="28" y="133" class="small sans">CHARACTER</text>
+      </g>
+      <g transform="translate(604 155)">
+        <rect width="240" height="160" rx="22" fill="#3A3543" stroke="#C9A76C" stroke-width="2"/>
+        <path d="M35 62h60M35 92h96M35 122h75" stroke="#C9A76C" stroke-width="7" stroke-linecap="round"/><text x="28" y="36" class="chip sans">世界观</text><text x="28" y="148" class="small sans">WORLDBUILDING</text>
+      </g>
+      <path d="M296 235H330M570 235H604" class="line" stroke-dasharray="8 12"><animate attributeName="stroke-dashoffset" values="0;-40" dur="1.5s" repeatCount="indefinite"/></path>
+      <path d="M176 315V480M450 315V480M724 315V480" class="mutedLine"/>
+      <rect x="56" y="480" width="788" height="175" rx="24" fill="#10253A" stroke="#31516D"/>
+      <text x="84" y="532" class="small sans">STRUCTURED PROJECT CONTEXT</text>
+      <text x="84" y="590" class="body serif">设定有来源，章节有依据，灵感不会互相打架。</text>
+      <path d="M84 620H750" stroke="#7EC8E3" stroke-opacity=".22" stroke-width="3"/>
+    </g>
+    <text x="540" y="1460" text-anchor="middle" class="gold chip sans">角色 · 世界观 · 蓝图 · 资料，一处协同</text>
+  </g>
+
+  <!-- 18–30s: chapter and AI -->
+  <g id="scene-draft" class="scene">
+    <animate attributeName="opacity" dur="60s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;.29;.33;.49;.53;1"/>
+    <text x="90" y="205" class="eyebrow sans">02 / AI 不替你做主，它帮你推进</text>
+    <text x="90" y="300" class="h2 serif">围绕本章，写得更稳</text>
+    <text x="90" y="355" class="body sans">章节蓝图 + 相关上下文，让每一次生成都有来处。</text>
+    <g transform="translate(78 485)">
+      <rect width="570" height="900" rx="34" class="card" filter="url(#shadow)"/>
+      <text x="46" y="70" class="small sans">CHAPTER BLUEPRINT / 第 07 章</text>
+      <text x="46" y="137" class="h2 serif" font-size="42">潮汐之前</text>
+      <rect x="46" y="178" width="478" height="2" fill="#31516D"/>
+      <text x="46" y="238" class="small sans">本章目标</text>
+      <text x="46" y="286" class="body sans">沈砚必须决定：留下，还是</text><text x="46" y="330" class="body sans">带着真相离开移动之城。</text>
+      <text x="46" y="414" class="small sans">相关角色</text>
+      <g transform="translate(46 450)"><rect width="200" height="54" rx="27" fill="#203B55"/><circle cx="30" cy="27" r="12" fill="#7EC8E3"/><text x="56" y="35" class="chip sans" font-size="19">沈砚</text></g>
+      <g transform="translate(260 450)"><rect width="220" height="54" rx="27" fill="#2C3152"/><circle cx="30" cy="27" r="12" fill="#9B8EC8"/><text x="56" y="35" class="chip sans" font-size="19">白鸢</text></g>
+      <text x="46" y="600" class="small sans">叙事线索</text>
+      <path d="M54 650C150 580 230 735 330 650S450 620 510 700" fill="none" stroke="#C9A76C" stroke-width="5"/>
+      <circle cx="54" cy="650" r="9" fill="#C9A76C"/><circle cx="330" cy="650" r="9" fill="#C9A76C"/><circle cx="510" cy="700" r="9" fill="#C9A76C"/>
+      <text x="46" y="790" class="small sans">上下文预算</text><rect x="46" y="820" width="478" height="14" rx="7" fill="#203B55"/><rect x="46" y="820" width="330" height="14" rx="7" fill="url(#cyanGold)"/><text x="390" y="835" class="small sans">69%</text>
+    </g>
+    <g transform="translate(680 650)" filter="url(#shadow)">
+      <rect width="322" height="460" rx="30" fill="#F7F5EF"/>
+      <rect width="322" height="68" rx="30" fill="#E6EEF0"/><circle cx="42" cy="34" r="17" fill="#5B9ED6"/><path d="M34 34h16M42 26v16" stroke="#F7F5EF" stroke-width="4"/>
+      <text x="76" y="43" fill="#253A4C" class="chip sans" font-size="20">AI 写作助手</text>
+      <text x="28" y="120" fill="#52636B" class="small sans">本章建议</text>
+      <text x="28" y="168" fill="#2D302B" class="body serif" font-size="23">让“潮汐”先改变</text><text x="28" y="207" fill="#2D302B" class="body serif" font-size="23">角色关系，再揭示</text><text x="28" y="246" fill="#2D302B" class="body serif" font-size="23">世界规则。</text>
+      <rect x="28" y="304" width="266" height="2" fill="#D1DCDC"/>
+      <text x="28" y="350" fill="#527A5B" class="chip sans" font-size="19">✓ 依据已加载</text><text x="28" y="390" fill="#7A5414" class="chip sans" font-size="19">◷ 等待作者确认</text>
+    </g>
+    <path d="M648 850H680" class="line" stroke-dasharray="6 10"><animate attributeName="stroke-dashoffset" values="0;-32" dur="1s" repeatCount="indefinite"/></path>
+    <text x="540" y="1535" text-anchor="middle" class="body sans">不把整本书塞进一次聊天 —— 只把此刻需要的资料带上。</text>
+  </g>
+
+  <!-- 30–42s: review loop -->
+  <g id="scene-review" class="scene">
+    <animate attributeName="opacity" dur="60s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;.48;.52;.69;.73;1"/>
+    <text x="90" y="205" class="eyebrow sans">03 / 写完不是结束，是开始变好</text>
+    <text x="90" y="300" class="h2 serif">草稿、审稿、修稿、定稿</text>
+    <text x="90" y="355" class="body sans">每一步都留痕，作者始终掌握最后决定权。</text>
+    <g transform="translate(80 530)">
+      <path d="M120 145H255M405 145H540M690 145H825" class="line" stroke-dasharray="12 12"><animate attributeName="stroke-dashoffset" values="0;-48" dur="1.3s" repeatCount="indefinite"/></path>
+      <g transform="translate(0 0)"><rect width="230" height="300" rx="28" class="card"/><circle cx="54" cy="58" r="26" fill="#7EC8E3" opacity=".25"/><path d="M44 58h20M54 48v20" stroke="#7EC8E3" stroke-width="4"/><text x="30" y="135" class="h2 serif" font-size="34">草稿</text><text x="30" y="185" class="body sans" font-size="22">先把故事写出来</text><text x="30" y="238" class="small sans">DRAFT v07.3</text></g>
+      <g transform="translate(270 0)"><rect width="230" height="300" rx="28" fill="#2C3152" stroke="#9B8EC8" stroke-width="2"/><circle cx="54" cy="58" r="26" fill="#9B8EC8" opacity=".28"/><path d="M42 61l9 9 17-22" stroke="#B7AAE1" stroke-width="5" fill="none"/><text x="30" y="135" class="h2 serif" font-size="34">审稿</text><text x="30" y="185" class="body sans" font-size="22">目标逐项核对</text><text x="30" y="238" class="small sans">REVIEW REPORT</text></g>
+      <g transform="translate(540 0)"><rect width="230" height="300" rx="28" fill="#3A3543" stroke="#C9A76C" stroke-width="2"/><circle cx="54" cy="58" r="26" fill="#C9A76C" opacity=".24"/><path d="M42 60h24M54 48v24" stroke="#C9A76C" stroke-width="4"/><text x="30" y="135" class="h2 serif" font-size="34">修稿</text><text x="30" y="185" class="body sans" font-size="22">作者选择怎么改</text><text x="30" y="238" class="small sans">AUTHOR CONTROL</text></g>
+      <g transform="translate(810 0)"><rect width="190" height="300" rx="28" fill="#173B41" stroke="#73C6B0" stroke-width="2"/><circle cx="54" cy="58" r="26" fill="#73C6B0" opacity=".24"/><path d="M42 60l9 9 18-23" stroke="#A7E6D1" stroke-width="5" fill="none"/><text x="30" y="135" class="h2 serif" font-size="34">定稿</text><text x="30" y="185" class="body sans" font-size="22">成为下一章依据</text><text x="30" y="238" class="small sans">FINAL SOURCE</text></g>
+    </g>
+    <g transform="translate(120 1050)"><rect width="840" height="340" rx="30" fill="#10253A" stroke="#31516D"/><text x="48" y="70" class="small sans">REVIEW EVIDENCE / 逐项目标审稿</text><text x="48" y="137" class="chip sans">✓ 已完成</text><text x="48" y="193" class="chip sans">◷ 待核实</text><text x="48" y="249" class="chip sans">→ 作者确认后再修</text><path d="M270 118H755M270 174H680M270 230H735" stroke="#31516D" stroke-width="12" stroke-linecap="round"/><path d="M270 118H620M270 174H488M270 230H570" stroke="url(#cyanGold)" stroke-width="12" stroke-linecap="round"/></g>
+    <text x="540" y="1570" text-anchor="middle" class="gold chip sans">AI 给建议，作者做决定。</text>
+  </g>
+
+  <!-- 42–52s: continuity -->
+  <g id="scene-continuity" class="scene">
+    <animate attributeName="opacity" dur="60s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;.68;.72;.85;.89;1"/>
+    <text x="90" y="205" class="eyebrow sans">04 / 长篇最怕忘记，墨书帮你记住</text>
+    <text x="90" y="300" class="h2 serif">让伏笔、角色与剧情保持连续</text>
+    <text x="90" y="355" class="body sans">从来源明确的定稿，到可重建的剧情树，故事越写越稳。</text>
+    <g transform="translate(90 505)" filter="url(#shadow)">
+      <rect width="900" height="760" rx="34" class="card"/>
+      <text x="48" y="70" class="small sans">NARRATIVE MAP / 故事线视图</text>
+      <path d="M120 585C190 470 220 320 330 230S520 180 570 310 680 500 790 210" fill="none" stroke="#7EC8E3" stroke-width="6"/>
+      <path d="M120 585C250 550 350 590 450 510S650 430 790 470" fill="none" stroke="#9B8EC8" stroke-width="5" stroke-dasharray="12 15"/>
+      <path d="M120 585C220 650 350 670 480 625S660 600 790 660" fill="none" stroke="#C9A76C" stroke-width="4" stroke-dasharray="6 16"/>
+      <g fill="#7EC8E3" stroke="#0A1628" stroke-width="8"><circle cx="120" cy="585" r="20"/><circle cx="330" cy="230" r="20"/><circle cx="570" cy="310" r="20"/><circle cx="790" cy="210" r="20"/></g>
+      <g fill="#9B8EC8" stroke="#0A1628" stroke-width="8"><circle cx="450" cy="510" r="18"/><circle cx="680" cy="430" r="18"/></g>
+      <g class="small sans"><text x="86" y="650">CH.01</text><text x="295" y="185">CH.03</text><text x="535" y="270">CH.07</text><text x="748" y="165">CH.12</text></g>
+      <rect x="48" y="118" width="220" height="60" rx="30" fill="#203B55"/><circle cx="80" cy="148" r="8" fill="#7EC8E3"/><text x="106" y="156" class="chip sans" font-size="19">主线 · 已定稿</text>
+      <rect x="292" y="118" width="220" height="60" rx="30" fill="#2C3152"/><circle cx="324" cy="148" r="8" fill="#9B8EC8"/><text x="350" y="156" class="chip sans" font-size="19">支线 · 伏笔</text>
+      <rect x="536" y="118" width="220" height="60" rx="30" fill="#3A3543"/><circle cx="568" cy="148" r="8" fill="#C9A76C"/><text x="594" y="156" class="chip sans" font-size="19">角色 · 状态</text>
+    </g>
+    <text x="540" y="1430" text-anchor="middle" class="body sans">把连续性从“凭记忆”，变成“有依据”。</text>
+    <text x="540" y="1510" text-anchor="middle" class="gold chip sans">剧情树 · 叙事线索 · 角色状态 · 知识库</text>
+  </g>
+
+  <!-- 52–60s: CTA -->
+  <g id="scene-cta" class="scene">
+    <animate attributeName="opacity" dur="60s" repeatCount="indefinite" values="0;0;1;1;0" keyTimes="0;.84;.88;.99;1"/>
+    <circle cx="540" cy="720" r="430" fill="url(#glow)" opacity=".5"/>
+    <g transform="translate(540 610)">
+      <circle r="130" fill="#102A40" stroke="url(#cyanGold)" stroke-width="5"/>
+      <path d="M-48 -45Q0 -75 48 -45V58Q0 28-48 58Z" fill="#F7F5EF"/>
+      <path d="M0 -57V42M-32 -26H-10M-32 4H-10M10 -26H32M10 4H32" stroke="#5B9ED6" stroke-width="7" stroke-linecap="round"/>
+      <circle cx="88" cy="-82" r="10" fill="#C9A76C"><animate attributeName="r" values="10;16;10" dur="1.7s" repeatCount="indefinite"/></circle>
+    </g>
+    <text x="540" y="960" text-anchor="middle" class="eyebrow sans">LOCAL-FIRST · AUTHOR-CONTROLLED</text>
+    <text x="540" y="1060" text-anchor="middle" class="h1 serif">把下一部小说，</text>
+    <text x="540" y="1150" text-anchor="middle" class="h1 serif">写成一个项目。</text>
+    <text x="540" y="1270" text-anchor="middle" class="body sans">模型由你配置，资料留在你的电脑上。</text>
+    <g transform="translate(540 1430)">
+      <rect x="-250" y="-45" width="500" height="90" rx="45" fill="url(#cyanGold)"/>
+      <text y="12" text-anchor="middle" fill="#071322" class="chip sans" font-size="27">开始构建你的故事 →</text>
+    </g>
+    <text x="540" y="1640" text-anchor="middle" class="small sans">AI 小说作家 · 墨书 Moshu</text>
+    <text x="540" y="1700" text-anchor="middle" class="small sans" opacity=".7">DESKTOP WORKSPACE FOR LONG-FORM FICTION</text>
+  </g>
+
+  <!-- Persistent safe-area / timeline chrome -->
+  <g class="sans" opacity=".82">
+    <text x="72" y="1818" class="small">MOSHU / AI NOVEL WRITER</text>
+    <text x="1008" y="1818" text-anchor="end" class="small">60″ STORY WORKFLOW</text>
+    <rect x="72" y="1845" width="936" height="4" rx="2" fill="#29435C"/>
+    <rect x="72" y="1845" width="936" height="4" rx="2" fill="url(#cyanGold)">
+      <animate attributeName="width" dur="60s" repeatCount="indefinite" values="0;936" keyTimes="0;1"/>
+    </rect>
+    <circle cy="1847" r="10" fill="#F4F8FC"><animate attributeName="cx" dur="60s" repeatCount="indefinite" values="72;1008" keyTimes="0;1"/></circle>
+  </g>
+</svg>

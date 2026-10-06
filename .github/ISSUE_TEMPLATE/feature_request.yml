@@ -1,0 +1,33 @@
+name: 功能建议
+description: 提议一项产品改进
+title: "[Feature] "
+labels:
+  - enhancement
+  - needs-triage
+body:
+  - type: markdown
+    attributes:
+      value: |
+        请说明要解决的问题和期望的变化。这是公开页面，请勿粘贴 API Key、完整小说正文或个人隐私信息。
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: 要解决的问题
+      description: 当前哪里不好用或做不到？
+    validations:
+      required: true
+
+  - type: textarea
+    id: desired-change
+    attributes:
+      label: 期望的变化
+      description: 希望能做什么？完成后看到什么结果？
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: 其他补充
+      description: 可附脱敏截图、已尝试的方法或相关链接。

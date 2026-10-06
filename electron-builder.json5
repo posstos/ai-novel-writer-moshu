@@ -1,0 +1,74 @@
+// @see - https://www.electron.build/configuration/configuration
+{
+  "$schema": "https://raw.githubusercontent.com/electron-userland/electron-builder/master/packages/app-builder-lib/scheme.json",
+  "appId": "com.ai-novel-writer.app",
+  "asar": true,
+  "asarUnpack": [
+    "node_modules/apache-arrow/**/*",
+    "node_modules/better-sqlite3/**/*",
+    "node_modules/@lancedb/lancedb/**/*",
+    "node_modules/@lancedb/lancedb-darwin-*/**/*",
+    "node_modules/@lancedb/lancedb-linux-*/**/*",
+    "node_modules/@lancedb/lancedb-win32-*/**/*",
+    "node_modules/@lancedb/lancedb-win32-x64-msvc/**/*"
+  ],
+  "productName": "AI小说作家",
+  "directories": {
+    "output": "release/${version}"
+  },
+  "files": [
+    "dist",
+    "dist-electron",
+    "build"
+  ],
+  "mac": {
+    "target": ["dmg"],
+    "artifactName": "ai-novel-writer-mac-${arch}-${version}-installer.${ext}",
+    "category": "public.app-category.productivity",
+    "identity": "-",
+    "hardenedRuntime": false,
+    "extraResources": [
+      {
+        "from": "electron/security/darwin-safe-file-system",
+        "to": "security/darwin-safe-file-system"
+      }
+    ]
+  },
+  "win": {
+    "target": [
+      {
+        "target": "nsis",
+        "arch": ["x64"]
+      }
+    ],
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "EthanYoQ",
+        "repo": "AI-Novel-Writer",
+        "channel": "latest",
+        "releaseType": "release",
+        "publishAutoUpdate": true,
+        "tagNamePrefix": "v"
+      }
+    ],
+    "extraResources": [
+      {
+        "from": "electron/security/windows-safe-file-system.ps1",
+        "to": "security/windows-safe-file-system.ps1"
+      }
+    ]
+  },
+  "nsis": {
+    "artifactName": "ai-novel-writer-setup-${version}.${ext}",
+    "oneClick": false,
+    "perMachine": false,
+    "allowToChangeInstallationDirectory": true,
+    "deleteAppDataOnUninstall": false
+  },
+  "linux": {
+    "target": ["AppImage"],
+    "artifactName": "${productName}-Linux-${version}.${ext}",
+    "category": "Office"
+  }
+}

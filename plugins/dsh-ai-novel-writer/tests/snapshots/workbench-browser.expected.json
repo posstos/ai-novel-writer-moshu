@@ -1,0 +1,27 @@
+{
+  "geometry": {
+    "desktop1440": true,
+    "drawerWithin440": true,
+    "conversationReserved": true,
+    "framePaddingReserved": true
+  },
+  "v2Detail": {
+    "overview": true,
+    "proposalDiff": true,
+    "taskStatus": true,
+    "longBodyScroll": true,
+    "stickyActions": true,
+    "saveAndApplyDisabled": true
+  },
+  "narrowDetailGeometry": {
+    "viewport390": true,
+    "drawerWithinViewport": true,
+    "editorWithinDrawer": true,
+    "actionsWithinDrawer": true,
+    "noHorizontalOverflow": true
+  },
+  "keyboard": {
+    "tabContained": true,
+    "escapeRestored": true
+  }
+}

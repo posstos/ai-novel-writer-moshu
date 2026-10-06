@@ -1,0 +1,110 @@
+import { Meta, ColorPalette, ColorItem, Typeset } from '@storybook/addon-docs/blocks'
+
+<Meta title="AI Novel Writer UI/Introduction" />
+
+# AI小说作家 Design System
+
+AI小说作家是一个 AI 深度驱动的小说创作 IDE，其 UI 设计系统基于 Tailwind CSS v4 + CSS 变量实现主题化。
+
+## Design Tokens
+
+AI小说作家使用 CSS 自定义属性（CSS Variables）作为设计 token 的单一数据源，支持 `light`、`galaxy`、`paper` 和 `dark` 四套主题。下面的色板直接渲染运行时变量，不维护第二份颜色常量。
+
+## Color System
+
+{['light', 'galaxy', 'paper', 'dark'].map((theme) => (
+  <div
+    key={theme}
+    className={theme}
+    data-theme={theme}
+    style={{
+      marginBlock: '1rem',
+      padding: '1rem',
+      color: 'var(--color-text)',
+      background: 'var(--color-bg)',
+      border: '1px solid var(--color-border)',
+      borderRadius: 'var(--radius-md)',
+    }}
+  >
+    <h3>{theme}</h3>
+    <ColorPalette>
+      <ColorItem title="Background" colors={{ bg: 'var(--color-bg)', sidebar: 'var(--color-sidebar)', panel: 'var(--color-panel)' }} />
+      <ColorItem title="Text" colors={{ primary: 'var(--color-text)', secondary: 'var(--color-text-secondary)', muted: 'var(--color-text-muted)' }} />
+      <ColorItem title="Accent" colors={{ accent: 'var(--color-accent)', gold: 'var(--color-gold)' }} />
+      <ColorItem title="Semantic" colors={{ success: 'var(--color-success)', warning: 'var(--color-warning)', error: 'var(--color-error)', info: 'var(--color-info)' }} />
+    </ColorPalette>
+  </div>
+))}
+
+## Typography
+
+### Font Families
+
+{[
+  { label: '界面', value: 'var(--font-sans)', sample: '项目、章节与创作工具' },
+  { label: '正文写作', value: 'var(--font-writing)', sample: '长篇小说正文排版示例' },
+  { label: '等宽内容', value: 'var(--font-mono)', sample: 'chapter_01.md' },
+].map(({ label, value, sample }) => (
+  <div key={label} style={{ marginBlock: '0.75rem', fontFamily: value }}>
+    <strong>{label}</strong> · <code>{value}</code>
+    <div>{sample}</div>
+  </div>
+))}
+
+### Type Scale
+
+<Typeset
+  fontSizes={['0.625rem', '0.75rem', '0.875rem', '1rem', '1.25rem']}
+  fontWeight={400}
+  sampleText="AI Novel Writer - AI Novel Writing IDE"
+/>
+
+## Spacing Scale
+
+| Token | Value | Usage |
+|-------|-------|-------|
+| `1` | 4px | Tight grouping |
+| `2` | 8px | Default internal spacing |
+| `3` | 12px | Component padding |
+| `4` | 16px | Section padding |
+| `5` | 20px | Large gaps |
+| `6` | 24px | Panel padding |
+
+## Border Radius
+
+{[
+  { token: '--radius-sm', value: 'var(--radius-sm)', usage: 'Small elements' },
+  { token: '--radius-md', value: 'var(--radius-md)', usage: 'Buttons and inputs' },
+  { token: '--radius-lg', value: 'var(--radius-lg)', usage: 'Cards' },
+  { token: '--radius-xl', value: 'var(--radius-xl)', usage: 'Modals' },
+  { token: '--radius-2xl', value: 'var(--radius-2xl)', usage: 'Large panels' },
+].map(({ token, value, usage }) => (
+  <div
+    key={token}
+    style={{
+      display: 'inline-block',
+      marginInlineEnd: '0.75rem',
+      marginBlock: '0.5rem',
+      padding: '0.75rem',
+      border: '1px solid var(--color-border)',
+      borderRadius: value,
+    }}
+  >
+    <code>{value}</code> · {usage}
+  </div>
+))}
+
+## Components
+
+AI小说作家 UI 提供 20+ 原子组件，位于 `src/components/ui/`：
+
+- **Button** - 按钮组件，支持 6 种变体
+- **Badge** - 标签组件，用于状态标识
+- **Input** - 输入框组件
+- **Dialog** - 对话框组件
+- **Toast** - 全局通知系统
+- **Tooltip** - 提示组件
+- **Switch** - 开关组件
+- **...**
+
+详见各组件文档。

@@ -1,0 +1,434 @@
+import fs from 'node:fs'
+import fsPromises from 'node:fs/promises'
+import os from 'node:os'
+import path from 'node:path'
+import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
+import type { SecureFileCapability, WindowsSafeFileSystem } from '../../security/windows-safe-file-system'
+
+type IpcHandler = (...args: unknown[]) => Promise<unknown>
+
+const mocks = vi.hoisted(() => ({
+  handlers: new Map<string, IpcHandler>(),
+  currentProjectPath: '',
+  activeLeaseId: 'lease-A',
+  assertCurrentProjectContext: vi.fn(),
+}))
+
+vi.mock('electron', () => ({
+  ipcMain: {
+    handle: vi.fn((channel: string, handler: IpcHandler) => {
+      mocks.handlers.set(channel, handler)
+    }),
+  },
+}))
+
+vi.mock('../../database', () => ({
+  getCurrentProjectPath: () => mocks.currentProjectPath,
+}))
+
+vi.mock('../../services/project-access', () => ({
+  projectAccess: {
+    assertCurrentProjectContext: mocks.assertCurrentProjectContext,
+  },
+}))
+
+import { registerFSController } from '../fs-controller'
+import { runAgentLoop } from '../../../src/services/agent/agent-engine'
+import { toolRegistry } from '../../../src/services/agent/tool-registry'
+import { createAgentExecutionContext } from '../../../src/services/agent/tools/project-context'
+import { writeFileTool } from '../../../src/services/agent/tools/write-file.tool'
+import { useProjectStore } from '../../../src/stores/project-store'
+
+const temporaryRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'ai-novel-fs-controller-'))
+const projectAPath = path.join(temporaryRoot, 'A')
+const projectBPath = path.join(temporaryRoot, 'B')
+fs.mkdirSync(projectAPath)
+fs.mkdirSync(projectBPath)
+
+function capabilityPath(capability: SecureFileCapability): string {
+  return capability.relativePath
+    ? path.join(capability.rootPath, ...capability.relativePath.split('\\'))
+    : capability.rootPath
+}
+
+// The production controller has no Node fs fallback. This seam makes the lease
+// timing visible while preserving the same beforeReplace commit boundary that
+// the Windows handle helper exposes.
+const testFileSystem: WindowsSafeFileSystem = {
+  async readBytes(capability) {
+    return fsPromises.readFile(capabilityPath(capability))
+  },
+  async readText(capability) {
+    return fsPromises.readFile(capabilityPath(capability), 'utf8')
+  },
+  async writeTextAtomically(capability, content, beforeReplace) {
+    const target = capabilityPath(capability)
+    const temporary = `${target}.test-tmp`
+    try {
+      await fsPromises.writeFile(temporary, content, 'utf8')
+      await beforeReplace?.()
+      fs.renameSync(temporary, target)
+    } finally {
+      await fsPromises.unlink(temporary).catch(() => undefined)
+    }
+  },
+  async mkdir(capability) {
+    fs.mkdirSync(capabilityPath(capability), { recursive: true })
+  },
+  async exists(capability) {
+    return fs.existsSync(capabilityPath(capability))
+  },
+  async listDirectory(capability) {
+    return fs.readdirSync(capabilityPath(capability), { withFileTypes: true }).map(entry => ({
+      name: entry.name,
+      isDirectory: entry.isDirectory(),
+    }))
+  },
+}
+
+function rawHandler(channel: string): IpcHandler {
+  const registered = mocks.handlers.get(channel)
+  if (!registered) throw new Error(`Missing IPC handler: ${channel}`)
+  return registered
+}
+
+function handler(channel: string): IpcHandler {
+  return handlerWithLease(channel, 'lease-A')
+}
+
+function handlerWithLease(channel: string, leaseId: string): IpcHandler {
+  const registered = rawHandler(channel)
+  return async (event, ...args) => registered(event, ...args, {
+    projectId: 'project-A',
+    leaseId,
+    projectPath: mocks.currentProjectPath,
+  })
+}
+
+function deferred<T>() {
+  let resolve!: (value: T) => void
+  let reject!: (reason?: unknown) => void
+  const promise = new Promise<T>((resolvePromise, rejectPromise) => {
+    resolve = resolvePromise
+    reject = rejectPromise
+  })
+  return { promise, resolve, reject }
+}
+
+/**
+ * Project-boundary failures are deliberately localized by the main process.
+ * Keep the exact security outcome under test while allowing either supported
+ * user-facing locale, rather than accidentally coupling this safety suite to
+ * the developer machine's persisted locale.
+ */
+function expectLocalizedSecurityFailure(
+  result: unknown,
+  messages: readonly [string, string],
+): void {
+  expect(result).toMatchObject({ success: false })
+  expect(result).toHaveProperty('error')
+  expect(messages).toContain((result as { error?: unknown }).error)
+}
+
+beforeAll(() => {
+  registerFSController(testFileSystem)
+})
+
+beforeEach(() => {
+  mocks.currentProjectPath = projectAPath
+  mocks.activeLeaseId = 'lease-A'
+  vi.restoreAllMocks()
+  vi.clearAllMocks()
+  mocks.assertCurrentProjectContext.mockImplementation((context: { projectPath?: string; leaseId?: string } | undefined, currentProjectPath: string) => {
+    if (!context?.projectPath) throw new Error('缺少项目会话上下文，已拒绝操作')
+    if (context.projectPath !== currentProjectPath) {
+      throw new Error('项目会话与当前数据库不匹配，已拒绝操作')
+    }
+    if (context.leaseId !== mocks.activeLeaseId) {
+      throw new Error('项目会话租约已失效，已拒绝操作')
+    }
+    return { rootPath: currentProjectPath }
+  })
+})
+
+afterAll(() => {
+  fs.rmSync(temporaryRoot, { recursive: true, force: true })
+})
+
+afterEach(() => {
+  toolRegistry.unregister('write_file')
+  vi.unstubAllGlobals()
+  useProjectStore.setState({ currentProject: null })
+})
+
+describe('project-scoped filesystem boundary', () => {
+  it('does not register legacy raw external filesystem channels', () => {
+    expect(mocks.handlers.has('fs:external-read-file')).toBe(false)
+    expect(mocks.handlers.has('fs:external-write-file')).toBe(false)
+    expect(mocks.handlers.has('fs:external-list-dir')).toBe(false)
+    expect(mocks.handlers.has('fs:external-mkdir')).toBe(false)
+    expect(mocks.handlers.has('fs:external-check-exists')).toBe(false)
+  })
+
+  it('rejects project file access when the renderer omits project identity', async () => {
+    const result = await rawHandler('fs:read-file')(
+      {},
+      path.join(projectAPath, 'chapter.md'),
+    )
+
+    expectLocalizedSecurityFailure(result, [
+      '缺少项目会话上下文，已拒绝操作。',
+      'Project session context is missing; the operation was rejected.',
+    ])
+  })
+
+  it('rejects a matching filesystem path when its project session is omitted', async () => {
+    const result = await rawHandler('fs:mkdir')(
+      {},
+      path.join(projectAPath, 'without-session'),
+      projectAPath,
+    )
+
+    expectLocalizedSecurityFailure(result, [
+      '缺少项目会话上下文，已拒绝操作。',
+      'Project session context is missing; the operation was rejected.',
+    ])
+  })
+
+  it('rejects traversal and unrelated absolute paths before read or write', async () => {
+    const traversalResult = await handler('fs:read-file')(
+      {},
+      path.join(projectAPath, '..', 'B', 'secret.md'),
+      projectAPath,
+    )
+    expectLocalizedSecurityFailure(traversalResult, [
+      '目标超出当前项目范围，已拒绝操作。',
+      'The target is outside the current project; the operation was rejected.',
+    ])
+
+    const unrelatedWriteResult = await handler('fs:write-file')(
+      {},
+      path.join(projectBPath, 'secret.md'),
+      'content',
+      projectAPath,
+    )
+    expectLocalizedSecurityFailure(unrelatedWriteResult, [
+      '目标超出当前项目范围，已拒绝操作。',
+      'The target is outside the current project; the operation was rejected.',
+    ])
+  })
+
+  it('rejects a project identity that no longer matches the active database', async () => {
+    mocks.currentProjectPath = projectBPath
+
+    const result = await handler('fs:read-file')(
+      {},
+      path.join(projectAPath, 'chapter.md'),
+      projectAPath,
+    )
+    expectLocalizedSecurityFailure(result, [
+      '检测到跨项目读写，已拒绝操作。',
+      'Cross-project file access was rejected.',
+    ])
+  })
+
+  it('propagates directory enumeration failures instead of returning an empty tree', async () => {
+    await expect(handler('fs:list-dir')(
+      {},
+      path.join(projectAPath, 'missing'),
+      projectAPath,
+    )).rejects.toThrow()
+  })
+
+  it('returns actionable guidance for a missing project file without creating it or exposing its path', async () => {
+    const missingPath = path.join(projectAPath, '02_architecture', '世界观.md')
+
+    const result = await handler('fs:read-file')(
+      {},
+      missingPath,
+      projectAPath,
+    )
+
+    expect(result).toMatchObject({ success: false, content: '' })
+    const error = (result as { error?: string }).error ?? ''
+    expect(error).toContain('read_architecture')
+    expect(error).toMatch(/项目文件不存在|does not exist/)
+    expect(error).not.toContain(missingPath)
+    expect(fs.existsSync(missingPath)).toBe(false)
+  })
+
+  it('rejects a delayed same-path read when the project is reopened with a new lease', async () => {
+    const target = path.join(projectAPath, 'chapter.md')
+    fs.writeFileSync(target, 'old content', 'utf8')
+    const pendingRead = deferred<string>()
+    const readSpy = vi.spyOn(fsPromises, 'readFile').mockImplementationOnce(async () => pendingRead.promise)
+
+    const resultPromise = handlerWithLease('fs:read-file', 'lease-A')(
+      {},
+      target,
+      projectAPath,
+    )
+
+    await vi.waitFor(() => expect(readSpy).toHaveBeenCalledOnce())
+    mocks.activeLeaseId = 'lease-B'
+    pendingRead.resolve('stale content')
+
+    expectLocalizedSecurityFailure(await resultPromise, [
+      '项目租约已失效，已拒绝操作。',
+      'The project lease has expired; the operation was rejected.',
+    ])
+  })
+
+  it('rejects a delayed same-path write before it can replace the target after reopen', async () => {
+    const target = path.join(projectAPath, 'chapter.md')
+    fs.writeFileSync(target, 'original', 'utf8')
+    const pendingWrite = deferred<void>()
+    const mkdirSpy = vi.spyOn(fs, 'mkdirSync')
+    const writeSpy = vi.spyOn(fsPromises, 'writeFile').mockImplementationOnce(async () => pendingWrite.promise)
+    const renameSpy = vi.spyOn(fs, 'renameSync').mockImplementationOnce(() => undefined)
+
+    const resultPromise = handlerWithLease('fs:write-file', 'lease-A')(
+      {},
+      target,
+      'stale write',
+      projectAPath,
+    )
+
+    await vi.waitFor(() => expect(writeSpy).toHaveBeenCalledOnce())
+    mocks.activeLeaseId = 'lease-B'
+    pendingWrite.resolve()
+
+    expectLocalizedSecurityFailure(await resultPromise, [
+      '项目租约已失效，已拒绝操作。',
+      'The project lease has expired; the operation was rejected.',
+    ])
+    await expect(resultPromise).resolves.toMatchObject({ commitState: 'not_committed' })
+    expect(mkdirSpy).toHaveBeenCalledOnce()
+    expect(renameSpy).not.toHaveBeenCalled()
+    expect(fs.readFileSync(target, 'utf8')).toBe('original')
+  })
+
+  it('reports committed when the file was replaced before the old project lease became stale', async () => {
+    const target = path.join(projectAPath, 'chapter.md')
+    fs.writeFileSync(target, 'original', 'utf8')
+    const writeSpy = vi.spyOn(testFileSystem, 'writeTextAtomically').mockImplementationOnce(async (capability, content, beforeReplace) => {
+      await beforeReplace?.()
+      fs.writeFileSync(capabilityPath(capability), content, 'utf8')
+      mocks.activeLeaseId = 'lease-B'
+    })
+
+    const result = await handlerWithLease('fs:write-file', 'lease-A')(
+      {},
+      target,
+      'committed content',
+      projectAPath,
+    )
+
+    expect(result).toMatchObject({ success: false, commitState: 'committed' })
+    expect(writeSpy).toHaveBeenCalledOnce()
+    expect(fs.readFileSync(target, 'utf8')).toBe('committed content')
+  })
+
+  it('reports unknown when the atomic helper loses its receipt after the commit command', async () => {
+    const target = path.join(projectAPath, 'chapter.md')
+    fs.writeFileSync(target, 'original', 'utf8')
+    vi.spyOn(testFileSystem, 'writeTextAtomically').mockRejectedValueOnce(Object.assign(
+      new Error('SECURE_FS_HELPER_TIMEOUT'),
+      { commitState: 'unknown' as const },
+    ))
+
+    const result = await handler('fs:write-file')(
+      {},
+      target,
+      'possibly committed content',
+      projectAPath,
+    )
+
+    expect(result).toMatchObject({ success: false, commitState: 'unknown' })
+  })
+})
+
+describe('Agent write_file commit result integration', () => {
+  function agentCallbacks() {
+    return {
+      onTextChunk: vi.fn(),
+      onToolCallStart: vi.fn(),
+      onToolCallComplete: vi.fn(),
+      onToolCallConfirmRequired: vi.fn(async () => true),
+      onDone: vi.fn(),
+      onError: vi.fn(),
+    }
+  }
+
+  function prepareAgentBoundary() {
+    useProjectStore.setState({
+      currentProject: {
+        id: 'project-A',
+        sessionLease: 'lease-A',
+        name: 'A',
+        path: projectAPath,
+        novelConfig: { writingLanguage: 'en-US' },
+      } as never,
+    })
+    vi.stubGlobal('window', {
+      velaAPI: {
+        invoke: (channel: string, ...args: unknown[]) => rawHandler(channel)({}, ...args),
+        on: vi.fn(),
+        once: vi.fn(),
+        send: vi.fn(),
+      },
+    })
+    toolRegistry.register(writeFileTool)
+  }
+
+  it('writes once through controller and reports the committed receipt to the confirmed Agent call', async () => {
+    prepareAgentBoundary()
+    const callbacks = agentCallbacks()
+    const target = path.join(projectAPath, 'agent-output.md')
+    const writeSpy = vi.spyOn(testFileSystem, 'writeTextAtomically')
+    const generate = vi.fn()
+      .mockResolvedValueOnce('<tool_call>{"name":"write_file","arguments":{"file_path":"agent-output.md","content":"committed once"}}</tool_call>')
+      .mockResolvedValueOnce('done')
+
+    await runAgentLoop(
+      'system', [], 'write', 'model', generate, callbacks, undefined,
+      createAgentExecutionContext(),
+    )
+
+    expect(callbacks.onToolCallConfirmRequired).toHaveBeenCalledOnce()
+    expect(writeSpy).toHaveBeenCalledOnce()
+    expect(fs.readFileSync(target, 'utf8')).toBe('committed once')
+    expect(callbacks.onToolCallComplete).toHaveBeenCalledWith(expect.objectContaining({
+      status: 'completed',
+      commitState: 'committed',
+    }))
+  })
+
+  it('stops without replay when controller returns an unknown helper receipt', async () => {
+    prepareAgentBoundary()
+    const callbacks = agentCallbacks()
+    const writeSpy = vi.spyOn(testFileSystem, 'writeTextAtomically').mockRejectedValueOnce(Object.assign(
+      new Error('SECURE_FS_HELPER_TIMEOUT'),
+      { commitState: 'unknown' as const },
+    ))
+    const generate = vi.fn()
+      .mockResolvedValue('<tool_call>{"name":"write_file","arguments":{"file_path":"agent-unknown.md","content":"maybe"}}</tool_call>')
+
+    await runAgentLoop(
+      'system', [], 'write', 'model', generate, callbacks, undefined,
+      createAgentExecutionContext(),
+    )
+
+    expect(writeSpy).toHaveBeenCalledOnce()
+    expect(generate).toHaveBeenCalledOnce()
+    expect(callbacks.onToolCallComplete).toHaveBeenCalledWith(expect.objectContaining({
+      status: 'result_unknown',
+      commitState: 'unknown',
+    }))
+    expect(callbacks.onDone).toHaveBeenCalledWith(
+      expect.stringMatching(/stopped to avoid a duplicate write|避免重复写入/u),
+      expect.anything(),
+      expect.anything(),
+    )
+  })
+})

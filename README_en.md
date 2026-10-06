@@ -1,0 +1,237 @@
+> **Local customization: Moshu.** The original project format, data locations, and launcher remain unchanged. See the [Chinese getting-started guide](docs/moshu-guide.md).
+
+<div align="center">
+
+**English** | [中文](README.md)
+
+</div>
+
+<p align="center">
+  <img src="docs/assets/readme/ai-novel-writer-logo-transparent.png" width="104" height="104" alt="AI Novel Writer Logo" />
+</p>
+
+<h1 align="center">AI Novel Writer / AI 小说作家</h1>
+
+<p align="center">
+  An AI-powered novel writing studio designed to plan, draft, and refine long-form fiction.. It organizes “premise → characters → worldbuilding → chapter blueprints → draft → review → revision → final” as a traceable writing workflow. You configure the model; your project material stays on your computer.
+</p>
+
+<p align="center">
+  <a href="https://github.com/EthanYoQ/AI-Novel-Writer/releases"><img src="https://badgen.net/github/tag/EthanYoQ/AI-Novel-Writer?label=release" alt="Release" /></a>
+  <a href="https://github.com/EthanYoQ/AI-Novel-Writer/tree/master/plugins/dsh-ai-novel-writer"><img src="https://badgen.net/badge/DSH%20plugin/0.1.0%20preview/blue" alt="DeepSeek Harness plugin 0.1.0 preview" /></a>
+  <a href="https://github.com/EthanYoQ/AI-Novel-Writer/blob/master/LICENSE"><img src="https://badgen.net/badge/license/GPL-3.0/blue" alt="GPL-3.0 License" /></a>
+  <a href="https://github.com/EthanYoQ/AI-Novel-Writer/stargazers"><img src="https://badgen.net/github/stars/EthanYoQ/AI-Novel-Writer" alt="GitHub stars" /></a>
+</p>
+
+<p align="center">
+  <a href="https://github.com/EthanYoQ/AI-Novel-Writer/releases/latest">Download desktop (Windows / macOS)</a> · <a href="https://www.npmjs.com/package/@ethanyoq/dsh-ai-novel-writer">Install the DeepSeek Harness Web plugin</a>
+</p>
+
+> **DeepSeek Harness plugin notice:** the `0.1.0` preview is currently frozen and has no short-term feature work planned. It has less than 10% of the desktop application's capabilities and is not a desktop replacement. Use the desktop edition above for a complete project tree, batch workflows, a mature editor, or automated review.
+
+<p align="center">
+  <img src="docs/assets/readme/hero-en-v2.png" alt="AI Novel Writer — a local-first desktop workspace for long-form fiction" width="100%" />
+</p>
+
+> ## v1.1.0
+>
+> - **Source-grounded continuity material** — Author-provided character information, model-derived progress, and legacy data with unknown provenance are no longer presented as the same kind of fact; later writing prefers finalized source prose with an identifiable origin.
+> - **Layered chapter materials** — The current task, future plans, finalized history, and candidate drafts are shown separately, with adjacent source paragraphs retained when they carry causality, negation, or item transfers across sentences.
+> - **Reliable candidate context** — Review-draft batches continue from the exact saved draft versions and prose in the current run and label them as unfinalized.
+> - **Goal-by-goal review** — Each chapter event shows whether it is completed, unmet, or needs verification, alongside source excerpts, so preparation or a promise is not automatically treated as completion.
+> - **Author-controlled goal revision** — Unverified items are not passed checks, and unmet or unverified chapter goals enter revision only when the author explicitly includes them, reducing rework caused by model misjudgments.
+> - **Update, export, and notification fixes** — Update checks no longer repeat during a download, split Markdown exports use independent directories, and workflow-completion notifications keep the full title.
+>
+> These changes reduce the risk that a mistaken summary or outdated state affects later chapters, but they do not replace author review or guarantee drift-free prose or perfect target-length compliance.
+
+### Features retained from 1.0.0
+
+- Writing Skills can be installed independently and used for planning, drafting, review, or polishing.
+- The story map shows main and side-story progress and links to the supporting chapter.
+- Planning material can be imported so blueprints and later writing share the same settings.
+- The character roster adds explicitly confirmed blueprint characters and tracks their state.
+- The Chinese long-form workflow connects blueprints, drafts, reviews, revisions, and final chapters.
+- Windows and macOS users can view and start the update intended for their computer.
+
+The 1.0.0 fixes for multi-draft saves, stale requests, source recovery, exports, and installation checks remain included; see the [bilingual 1.1.0 notes](.release/notes/v1.1.0.md) for each change. Official installers are published through [GitHub Releases](https://github.com/EthanYoQ/AI-Novel-Writer/releases/latest).
+
+> ## v0.9.0 feature baseline (historical release)
+>
+> [v0.9.0](https://github.com/EthanYoQ/AI-Novel-Writer/releases/tag/v0.9.0) makes continuity, chapter control, and review-driven revision more complete for long-form fiction while continuing to ship Windows, macOS Apple Silicon, and macOS Intel installers:
+>
+> - **Long-form continuity context** — Explicit author settings, the premise, characters, worldbuilding, outline, blueprints, and finalized facts carry into later writing to reduce forgotten setup and contradictions.
+> - **Foreshadowing and narrative threads** — See suggested hooks, planting and payoff chapters, active threads, and overdue reminders in one place, making long-running suspense easier to plan and resolve.
+> - **EPUB import and an interactive character graph** — Import EPUB2 / EPUB3 text through the existing chapter-splitting flow; zoom, pan, or clear the character relationship graph.
+> - **Per-chapter model and length control** — Single-chapter and continuous writing honor the selected model and target length for each run. Duplicate jobs for the same target are blocked with a clear notice.
+> - **Human-confirmed review loop** — Edit, ignore, or add review items, confirm the checklist, revise from that confirmed guidance, then inspect the diff before choosing whether to merge.
+> - **Smoother model setup** — Advanced model settings expose supported reasoning effort and temperature controls. After entering an API key and Base URL, fetch the model list directly without first saving an incomplete configuration.
+> - **More precise failure messages** — Content restrictions, provider failures, and duplicate jobs report a more specific cause, and incomplete output is not saved as successful project content.
+>
+> One Release uses the exact seven-asset contract: `ai-novel-writer-setup-0.9.0.exe`, `ai-novel-writer-setup-0.9.0.exe.blockmap`, `latest.yml`, `ai-novel-writer-mac-arm64-0.9.0-installer.dmg`, `ai-novel-writer-mac-arm64-0.9.0-installer.dmg.sha256`, `ai-novel-writer-mac-x64-0.9.0-installer.dmg`, and `ai-novel-writer-mac-x64-0.9.0-installer.dmg.sha256`. The Windows installer is not code-signed; both macOS installers use ad-hoc signing, have no Developer ID signature, and are not notarized, so their platform security prompts may require manual confirmation on first launch.
+
+
+
+## DeepSeek Harness plugin (early MVP)
+
+In addition to the Windows and macOS desktop editions, the repository retains the `@ethanyoq/dsh-ai-novel-writer` `0.1.0` developer preview. The plugin is currently frozen, with no short-term feature work planned. The DeepSeek Harness V2 workbench is an intentionally narrow early MVP with less than 10% of the desktop application's capabilities; it does not read desktop `.vela` projects and is not a replacement for the desktop project tree, batch workflows, mature editor, or automated review.
+
+V2 offers one human-reviewed authoring chain: project settings → story architecture → characters → whole-book outline → per-chapter blueprint → per-chapter prose. When a model Proposal arrives, its draft first fills the right-side workbench editor for human review and editing; authoritative project state changes only after the user explicitly applies the Proposal.
+
+The plugin is not part of the desktop application's formal Release, but it is published as a separate npm package with its own lockfile, CI, and MIT license; the repository root remains the GPL-3.0 desktop application. Install it into the DeepSeek Harness `web` profile:
+
+```sh
+dsh plugin --profile web add @ethanyoq/dsh-ai-novel-writer
+dsh --profile web
+```
+
+The [plugin installation guide](plugins/dsh-ai-novel-writer/docs/official-dsh-plugin-installation.md) separately owns source development, immutable tarball installation, and the Windows path-with-spaces limitation. This root README does not duplicate those changing maintainer steps.
+
+After Web starts, open **Novel Workbench**, install the **AI 小说作家 V2** Preset, then create a new Session with that Preset. AI drafting first fills the local editor in the right-side workbench for human review and editing; applying the Proposal is the only action that changes the project. See the [plugin README](plugins/dsh-ai-novel-writer/README.md) for features, project format, qualification coverage, and removal. Do not run `dsh plugin add github:EthanYoQ/AI-Novel-Writer`: the repository root package is the desktop application, not an activatable DSH bundle.
+
+
+
+## What this product is
+
+AI Novel Writer is not a hosted model service or an online fiction platform. It is the orchestration layer for a writing project: it keeps project state, organizes prompts and context, manages blueprints and draft versions, and connects generation, review, and revision.
+
+You may connect local or cloud models; the app does not provide or host model quotas. For long-form work, it assembles the current chapter blueprint, relevant character material, worldbuilding, history summaries, and optional style references instead of putting an entire novel into one chat transcript.
+
+```mermaid
+flowchart LR
+  A[Premise] --> B[Characters and worldbuilding]
+  B --> C[Outline and chapter blueprints]
+  C --> D[Chapter draft]
+  D --> E[Review report]
+  E --> F[Revision and finalization]
+  F --> G[Context for the next chapter]
+```
+
+## Interface preview
+
+![AI Novel Writer main window showing the project structure, welcome page, AI writing assistant and task panel](docs/assets/readme/ui-en.png)
+
+## Core capabilities
+
+| Capability | What it does |
+| --- | --- |
+| Structured writing workflow | Organizes premises, characters, worldbuilding, blueprints, drafts, reviews, revisions, and finals by stage. |
+| Chapter-level generation | Builds context around the current chapter blueprint and related material to reduce cross-chapter drift. |
+| Failed-generation recovery | If chapter generation fails after producing visible prose, the app saves it as a project-local recovery candidate; it is not a formal draft and cannot be continued after its source blueprint or draft changes, but it can be discarded. |
+| Review and revision | Produces structured review information for a draft and uses that report as revision input. |
+| Character cards and project material | Maintains characters, worldbuilding, blueprints, drafts, and finals in the project. Project sessions prevent an old window from writing into a newly reopened project. |
+| Plot tree and narrative threads | Shows main plots, subplots, and source progress on chapter tracks. The plot tree is a rebuildable read-only snapshot, not a replacement for author facts. |
+| Writing Skills and prompt templates | Binds supplemental methods by writing stage and customizes Chinese or English creative guidance while hidden contracts preserve language, output structure, and tool protocols. |
+| Writing-style control | Finalizing a chapter does not automatically rewrite the style in the novel configuration. You can still edit it manually, run writing-style analysis, or import a novel to build imitation guidance. |
+| Reference text and knowledge base | Imports common text formats as reference material. SQLite FTS remains available when no embedding model is configured. |
+| Batch writing task | A separate batch chapter task supports 1–10 chapters, pause, and cancel; downstream processing failure stops later chapters. |
+| Chinese and English UI | The first launch can follow the system locale; a manual choice is persisted. |
+
+When generating a plot outline, you can enter an explicit chapter range in “Generate story architecture.” Projects longer than 20 chapters default to Chapters 1–20. After one batch finishes, continue from the next chapter; if generation stops with a valid checkpoint, resume from it. If you edit the existing outline or any source settings or guidance used for generation, the old checkpoint cannot continue directly into the new content; regenerate the affected range instead.
+
+## One-click source startup on Windows
+
+Double-click **`一键启动.bat`** in the project root to launch the current source as an Electron desktop app. Node.js 22.13+ is required. If the pinned pnpm version or project dependencies are missing, confirm initial setup with `y`; a ready environment does not reinstall them on every launch.
+
+The launcher does not install Ollama or download model weights. It can reuse or start an existing Ollama installation. Keep the console open while running; logs are in `.runtime/launcher/logs/`. Create a shortcut if desired, rather than moving the BAT file away from the project.
+
+Use `一键启动.bat /check` for a read-only readiness check. See the [Windows launcher guide](docs/mcp-one-click-start.md) for behavior and verification limits. This is not an installer and does not update an existing packaged app.
+
+## Model configuration
+
+The app currently supports two request protocols:
+
+- **OpenAI-compatible** — for OpenAI, DeepSeek, Ollama, the NovelAI preset, and other compatible Chat Completions services.
+- **Native Gemini** — for Google Gemini-compatible endpoints.
+
+“Custom API” means a configurable URL, model identifier, and credential within those protocols. It is not an arbitrary HTTP protocol editor or a place to run user-supplied scripts. Protocols such as Anthropic Messages, Azure OpenAI, or native KoboldAI require dedicated adapters rather than a URL swap.
+
+### Local-first setup
+
+New generation and embedding profiles start as blank local Ollama drafts. Existing profiles, API keys, and defaults are not automatically migrated or overwritten. Both settings surfaces support **Detect local models → choose an installed model → configure → test connection → save**, with Ollama and LM Studio shortcuts. Detection only lists models: it does not install a service, download weights, generate text, or fall back to a cloud endpoint.
+
+Local OpenAI-compatible endpoints can use an empty API key; no placeholder is needed. Generation drafts start with a 2048-token output budget and an unknown context window. Set that window to the server's actual configuration, not the advertised model limit. Embeddings are configured separately with conservative batching; full-text search remains available without them.
+
+See the [local-model setup and validation guide](docs/mcp-local-model-first.md) for operating steps and limitations. Cloud providers remain available by explicit choice.
+
+### Ollama
+
+Use Ollama through its OpenAI-compatible service:
+
+```text
+Provider:  Ollama (local) or Custom
+Protocol:  OpenAI-compatible
+Base URL:  http://127.0.0.1:11434/v1
+API key:   leave blank unless server authentication requires a real key
+Model:     choose an installed model, for example qwen2.5:7b
+```
+
+Embedding models should also use `/v1`. Do not set the Base URL to `http://127.0.0.1:11434/api`: `/api` is Ollama's native path, not the OpenAI-compatible embedding path used by this application.
+
+### LM Studio
+
+Load a model and start the local OpenAI-compatible server in LM Studio, then choose **LM Studio** in quick setup. The default URL is `http://127.0.0.1:1234/v1`, saved as a Custom provider with a blank API key unless authentication is enabled. Use the regular form for a different port or an authenticated server. A successful model listing is not proof that generation works.
+
+### NovelAI (minimal compatibility support)
+
+Choose the **NovelAI** preset in settings. Its default address is `https://text.novelai.net/oa` and it uses the OpenAI-compatible protocol. Use your own Persistent API Token and enter a model identifier available to your account.
+
+The preset applies minimal parameter compatibility: it does not send standard `response_format`, and its thinking option follows the compatibility branch. The maintainer does not possess a user's NovelAI Token, so a complete real-account writing workflow has not been verified. Account permissions, model identifiers, and API behavior remain subject to NovelAI's own documentation and account response.
+
+## Data, privacy, and boundaries
+
+| Data or behavior | Default location / destination |
+| --- | --- |
+| Novel projects, characters, blueprints, drafts, and finals | Your project folder and local SQLite database. |
+| Failed-generation recovery candidates | Stored only in the current project's local SQLite database; they do not automatically become drafts, finals, or continuity facts. |
+| Imported reference material | Remains within the local project scope unless you choose to send it to a cloud model. |
+| Local-model requests | Sent to the local or LAN inference service you configure. |
+| Cloud-model requests | Prompts and context go to the provider you choose, such as OpenAI, DeepSeek, Gemini, or another cloud endpoint. |
+| Model configuration and API keys | Currently stored in the local user-profile file `~/.vela/models.json`; protect your OS account and do not share this file. |
+| App preferences and deferred-update settings | Stored in `~/.vela/config.json`. |
+
+The app does not provide model accounts, cloud generation, or operational-message pushes. Update checks read public GitHub Releases only; users can check manually and defer a discovered version reminder.
+
+## Installation and updates
+
+### Windows x64
+
+Formal releases use a Windows NSIS installer:
+
+```text
+ai-novel-writer-setup-<version>.exe
+```
+
+1. Download formal installers only from [GitHub Releases](https://github.com/EthanYoQ/AI-Novel-Writer/releases/latest).
+2. The installer updates the application and should not delete novel projects, character cards, or existing settings. Back up important work before any upgrade.
+3. After installation, use **Check for updates** on the welcome page. The app also performs at most one successful silent check per local day after startup. A discovered update is announced first and downloads only after the user chooses **Download update**; when the download finishes, the app offers **Restart and update / Later**.
+4. Older portable ZIP builds cannot obtain their first updater automatically. Install a formal installer manually once; new portable ZIP releases are no longer maintained.
+
+The installer is not code-signed at present. Windows may show publisher or reputation warnings; continue only after confirming that the download page is this repository's official GitHub Release.
+
+### macOS (Apple Silicon and Intel)
+
+Download the installer matching your Mac architecture from [GitHub Releases](https://github.com/EthanYoQ/AI-Novel-Writer/releases/latest):
+
+```text
+ai-novel-writer-mac-arm64-<version>-installer.dmg
+ai-novel-writer-mac-x64-<version>-installer.dmg
+```
+
+1. `arm64` supports Apple Silicon Macs (M1, M2, M3, M4, and later); `x64` supports Intel Macs.
+2. Drag the app from the DMG to Applications. The app can check the latest formal GitHub Release and display a reminder, but it does not download or replace the macOS app. The update action opens the official Release page so the user can download the installer for the correct architecture.
+3. Both installers are ad-hoc signed, have no Developer ID signature, and are not notarized. If Gatekeeper blocks it, confirm that the source is this repository's official GitHub Release, then Control-click the app in Finder and choose **Open**, or allow it in **System Settings → Privacy & Security**.
+
+## Current limits
+
+- A URL and key do not guarantee support for every third-party API; only implemented protocols and presets are in scope.
+- The app does not replace authorial judgment, fact checking, or copyright decisions. Review AI output before using it.
+- It does not provide online publishing, a reading community, or cloud-model accounts.
+- Formal installers are built in GitHub Actions. Windows, macOS ARM64, and macOS x64 candidates each pass their own qualification before they are listed in one GitHub Release.
+
+## Development and architecture documentation
+
+See [`docs/README.md`](docs/README.md) for documentation authority, ADRs, research, agent rules, and dated handoffs. The DeepSeek Harness plugin has its own [plugin documentation](plugins/dsh-ai-novel-writer/README.md) and does not define desktop behavior.
+
+## License
+
+[GPL-3.0](LICENSE)

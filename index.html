@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="./moshu-icon.svg" />
+    <title>墨墅 · 私人小说创作室</title>
+  </head>
+  <body style="margin: 0;">
+    <!-- 同步读取主题，避免加载页与主界面背景色闪跳 -->
+    <script>
+      (function() {
+        var bgMap = { light: '#F7F5EF', galaxy: '#0A1628', paper: '#F7F5EF', dark: '#1E1E1E' };
+        var theme = 'paper';
+        try {
+          var raw = localStorage.getItem('ai-novel-writer-theme');
+          if (raw) {
+            var state = JSON.parse(raw).state || {};
+            var candidate = state.resolvedTheme || state.theme;
+            if (candidate === 'night') candidate = 'dark'; // 兼容旧版
+            if (Object.prototype.hasOwnProperty.call(bgMap, candidate)) {
+              theme = candidate;
+            }
+          }
+        } catch(e) {}
+        
+        var bg = bgMap[theme] || bgMap.galaxy;
+        
+        // 提前给 html 注入主题 class，确保所有全局 CSS 变量立即生效
+        document.documentElement.classList.remove('light', 'dark', 'galaxy', 'paper');
+        document.documentElement.classList.add(theme);
+        
+        document.body.style.backgroundColor = bg;
+        /* 将背景色注入 CSS 变量供启动加载器引用 */
+        document.documentElement.style.setProperty('--loader-bg', bg);
+      })();
+    </script>
+    <div id="root">
+      <style>
+        .moshu-loader { display:flex; flex-direction:column; gap:18px; justify-content:center; align-items:center; height:100vh; background:var(--loader-bg,#F7F5EF); color:#354b40; font-family:"Microsoft YaHei",system-ui,sans-serif; }
+        .dark .moshu-loader, .galaxy .moshu-loader { color:#d7dfd0; }
+        .moshu-loader img { width:76px; height:76px; border-radius:22px; }
+        .moshu-loader strong { font-size:26px; letter-spacing:8px; padding-left:8px; }
+        .moshu-loader p { font-size:12px; letter-spacing:2px; margin:0; }
+        .moshu-loader-line { width:88px; height:2px; background:#ac9260; animation:moshu-breathe 1.8s ease-in-out infinite; }
+        @keyframes moshu-breathe { 50% { opacity:.3; transform:scaleX(.5); } }
+        @media(prefers-reduced-motion:reduce) { .moshu-loader-line { animation:none; } }
+      </style>
+      <div class="moshu-loader" role="status" aria-live="polite">
+        <img src="./moshu-icon.svg" alt="" />
+        <strong>墨墅</strong>
+        <p>正在为你打开书房…</p>
+        <span class="moshu-loader-line" aria-hidden="true"></span>
+      </div>
+    </div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

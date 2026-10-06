@@ -1,0 +1,55 @@
+name: Bug 报告
+description: 报告使用中遇到的问题
+title: "[Bug] "
+labels:
+  - bug
+  - needs-triage
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢反馈！请尽量描述清楚遇到的问题。这是公开页面，请勿粘贴 API Key、Token、完整小说正文或个人隐私信息。
+
+  - type: input
+    id: app-version
+    attributes:
+      label: 应用版本
+      description: 在应用“关于”页面查看；不确定填“未知”。
+      placeholder: 例如 1.1.0
+    validations:
+      required: true
+
+  - type: textarea
+    id: model
+    attributes:
+      label: 使用的模型
+      description: 模型供应商和名称（无需填 API Key）。未用到模型可填“无”。
+      placeholder: 例如 DeepSeek / deepseek-chat
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: 遇到的问题
+      description: 你做了什么？发生了什么？期望是什么？按顺序简单描述即可。
+      placeholder: |
+        1. 我打开了……
+        2. 点击了……
+        3. 结果出现……
+        期望：……
+    validations:
+      required: true
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: 截图（推荐）
+      description: 有截图能帮助快速定位，可将图片拖到这里。请遮盖小说正文、用户名等隐私信息。
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: 日志或报错（推荐）
+      description: 粘贴相关报错或日志（请脱敏）。没有可填“无”。
+      placeholder: 请粘贴相关报错或日志
